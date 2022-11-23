@@ -1,4 +1,4 @@
-#tensorflow, keras_ocr, cv2, pytesseract  pip install tensorflow==1.14.0
+#tensorflow, keras_ocr, cv2, pytesseract  pip install tensorflow==2.5.0
 #installed tesseract from https://digi.bib.uni-mannheim.de/tesseract/
 import streamlit as st
 import cv2
