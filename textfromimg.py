@@ -5,6 +5,7 @@ import cv2
 import pytesseract
 import numpy as np
 # pytesseract.pytesseract.tesseract_cmd= r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd=r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 def img_to_text(img):
     # img = cv2.imread(img)
