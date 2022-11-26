@@ -1,9 +1,11 @@
 #tensorflow, keras_ocr, cv2, pytesseract  pip install tensorflow==2.5.0
 #installed tesseract from https://digi.bib.uni-mannheim.de/tesseract/
+import PyPDF2
 import streamlit as st
 import cv2
 import pytesseract
 import numpy as np
+import os
 # pytesseract.pytesseract.tesseract_cmd= r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 pytesseract.pytesseract.tesseract_cmd=r"tesseract"
 
@@ -33,22 +35,63 @@ def img_to_text(img):
     # cv2.imshow('invert', contours)
     # cv2.waitKey()
 
-# img_to_text("spr.png")
-# print("*******************************************************************************")
-# img_to_text("ppr.png")
-# print("*******************************************************************************")
-# img_to_text("doc.png")
-# print("*******************************************************************************")
-# img_to_text("visa2.png")
-# print("*******************************************************************************")
-# img_to_text("loi.png")
-# print("*******************************************************************************")
-# img_to_text("studypermit.png")
-# print("*******************************************************************************")
+
 
 img=st.file_uploader("")
+text_extracted = ''
 if img is not None:
-    file_bytes = np.asarray(bytearray(img.read()), dtype=np.uint8)
-    opencv_image = cv2.imdecode(file_bytes, 1)
-    text = img_to_text(opencv_image)
-    st.write(text)
+    filetype = img.type.split('/')[1]
+    # st.write(filetype)
+    if filetype=='pdf':
+        # pdfFileObj = open('Sachin - study permit.pdf', 'rb')
+        pdfFileObj = img
+        pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+        print(pdfReader.numPages)
+
+        # creating a page object
+        pageObj = pdfReader.getPage(0)
+        text_extracted = pageObj.extractText()
+        pdfFileObj.close()
+    elif filetype.lower() in ['ras', 'xwd', 'bmp', 'jpe', 'jpg', 'jpeg', 'xpm', 'ief', 'pbm', 'tif', 'gif', 'ppm', 'xbm', 'tiff', 'rgb', 'pgm', 'png', 'pnm']:
+        file_bytes = np.asarray(bytearray(img.read()), dtype=np.uint8)
+        opencv_image = cv2.imdecode(file_bytes, 1)
+        text_extracted = img_to_text(opencv_image)
+        # st.write(text)
+    else:
+        st.warning("Please upload a valid file (.pdf, .ras, .xwd, .bmp, .jpe, .jpg, .jpeg, .xpm, .ief, .pbm, .tif, .gif, .ppm, .xbm, .tiff, .rgb, .pgm, .png, .pnm)")
+
+    option = st.selectbox('Please select the document type',
+                          ('---Select an option---', 'Study Permit Application', 'Passport Process Request',
+                           'TRV (Temporary residences Visa)', 'Study Permit Approval Letter (LOI)', 'Study Permit'))
+    # st.write(option)
+
+    if(option == 'Study Permit Application'):
+        if text_extracted.find("your application has been received") != -1:
+            st.success("Matched")
+        else:
+            st.warning("Please make sure you uploaded the right document")
+
+    elif (option == 'Passport Process Request'):
+        if text_extracted.find("We require your passport to finalize processing your application") != -1:
+            st.success("Matched")
+        else:
+            st.warning("Please make sure you uploaded the right document")
+
+    elif (option == 'TRV (Temporary residences Visa)'):
+        if text_extracted.find("MULTIPLE") != -1:
+            st.success("Matched")
+        else:
+            st.warning("Please make sure you uploaded the right document")
+
+    elif (option == 'Study Permit Approval Letter (LOI)'):
+        if text_extracted.find("letter of introduction") != -1:
+            st.success("Matched")
+        else:
+            st.warning("Please make sure you uploaded the right document")
+
+    elif (option == 'Study Permit'):
+        if text_extracted.find("INFORMATION DU CLIENT") != -1:
+            st.success("Matched")
+        else:
+            st.warning("Please make sure you uploaded the right document")
+    # st.write(text_extracted)
