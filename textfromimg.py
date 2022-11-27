@@ -6,8 +6,8 @@ import pytesseract
 import numpy as np
 
 #Specifying the path of Tesseract
-# pytesseract.pytesseract.tesseract_cmd= r'C:\Program Files\Tesseract-OCR\tesseract.exe'                  #For running locally
-pytesseract.pytesseract.tesseract_cmd=r"tesseract"                                                    #For running in cloud
+pytesseract.pytesseract.tesseract_cmd= r'C:\Program Files\Tesseract-OCR\tesseract.exe'                  #For running locally
+# pytesseract.pytesseract.tesseract_cmd=r"tesseract"                                                    #For running in cloud
 
 #Function to preprocess image and returns text from it
 def img_to_text(img):
@@ -48,8 +48,8 @@ if doc is not None:
         st.warning("Please upload a valid file (.pdf, .ras, .xwd, .bmp, .jpe, .jpg, .jpeg, .xpm, .ief, .pbm, .tif, .gif, .ppm, .xbm, .tiff, .rgb, .pgm, .png, .pnm)")
 
     option = st.selectbox('Please select the document type',
-                          ('---Select an option---', 'Study Permit Application', 'Passport Process Request',
-                           'TRV (Temporary residences Visa)', 'Study Permit Approval Letter (LOI)', 'Study Permit'))
+                          ('---Select an option---', 'Study Permit Application', 'Passport Process Request (PPR)',
+                           'Temporary Resident Visa (TRV)', 'Study Permit Approval Letter (LOI)', 'Study Permit'))
 
     if(option == 'Study Permit Application'):
         if text_extracted.find("your application has been received") != -1:
