@@ -6,8 +6,8 @@ import pytesseract
 import numpy as np
 
 #Specifying the path of Tesseract
-pytesseract.pytesseract.tesseract_cmd= r'C:\Program Files\Tesseract-OCR\tesseract.exe'                  #For running locally
-# pytesseract.pytesseract.tesseract_cmd=r"tesseract"                                                    #For running in cloud
+# pytesseract.pytesseract.tesseract_cmd= r'C:\Program Files\Tesseract-OCR\tesseract.exe'                  #For running locally
+pytesseract.pytesseract.tesseract_cmd=r"tesseract"                                                    #For running in cloud
 
 #Function to preprocess image and returns text from it
 def img_to_text(img):
