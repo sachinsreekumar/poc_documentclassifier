@@ -80,4 +80,4 @@ if doc is not None:
             st.success("Matched",icon="✅")
         else:
             st.warning("Please make sure you uploaded the right document",icon="⚠️")
-    st.write(text_extracted)
+    # st.write(text_extracted)
