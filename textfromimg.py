@@ -52,7 +52,7 @@ if doc is not None:
                            'Temporary Resident Visa (TRV)', 'Study Permit Approval Letter (LOI)', 'Study Permit'))
 
     if(option == 'Study Permit Application'):
-        if text_extracted.find("your application has been received") != -1:
+        if text_extracted.find("your application has been received") != -1 or text_extracted.find("Principal Applicant") != -1:
             st.success("Matched",icon="✅")
         else:
             st.warning("Please make sure you uploaded the right document",icon="⚠️")
