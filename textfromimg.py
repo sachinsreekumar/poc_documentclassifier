@@ -142,6 +142,3 @@ if doc is not None:
                     "Please make sure you uploaded the right document. This document looks like a " + doc_recommended,
                     icon="⚠️")
     # st.write(text_extracted)
-
-
-
