@@ -5,8 +5,88 @@ import pytesseract
 import numpy as np
 import pandas as pd
 import time
+from PIL import Image
+import streamlit.components.v1 as components
 
 st.set_page_config(layout="wide", page_title="Document Classifier")
+
+st.markdown(
+    """
+    <style>
+        .css-9ycgxx {
+            display: none;      /* drag drop content set empty */
+            
+        }
+        .css-1fttcpj {
+            display: none;              /* drag drop size content set empty */
+        }
+        .css-u8hs99:after {
+            content: "Drop files";      /* content in drag drop */
+        }
+        
+        .css-x8wxsk {
+            padding-top:4px;
+            padding-bottom:4px;             /* drag drop padding */
+        }
+        .css-fis6aj{
+            padding-top:0px;            /* document display below widget */
+        }
+        .css-ocqkz7{
+            height:90px;                /* height of drag drop */
+        }
+        .css-k3w14i{
+            display:none;
+        }
+        
+        .css-1fqecya {
+         text-align:left;
+        }
+        
+        .css-1avcm0n{
+            height:0px;
+        }
+        .css-18e3th9{
+            padding-top:0rem !important;
+        }
+        .st-an {
+            padding-top: 4px;
+        }
+        .css-ocqkz7{
+            height:70px;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+
+st.markdown("""
+        <style>
+                /* page view */
+               .css-18e3th9 {
+                    padding-top: 2rem;
+                    padding-bottom: 10rem;
+                    padding-left: 5rem;
+                    padding-right: 5rem;
+                }
+                .css-1d391kg {
+                    padding-top: 3.5rem;
+                    padding-right: 1rem;
+                    padding-bottom: 3.5rem;
+                    padding-left: 1rem;
+                }
+               
+        </style>
+        """, unsafe_allow_html=True)
+
+
+left, right = st.columns([1, 1])
+with left:
+    image = Image.open('logo.png')
+    st.image(image, caption='', width=None, use_column_width=True)
+with right:
+    st.markdown(
+        "<h2 id='seperator' style='width: 100%; text-align: center; line-height: 0.1em; margin: 10px 0 20px;'>"
+        "<span style='background:transparent; padding:0 10px; color: #0074B1 '>Document Classifier</span></h2>",
+        unsafe_allow_html=True)
 
 
 #Specifying the path of Tesseract
@@ -157,7 +237,7 @@ st.markdown(
     <style>
         div[data-testid="column"]:nth-of-type(1)
         {
-            line-height: 7;
+            line-height: 2;
             display: inline-block;
             vertical-align: middle;
             text-align:center;
@@ -167,12 +247,12 @@ st.markdown(
         {
             line-height: 1.5;
             display: inline-block;
-            vertical-align: middle;
+            vertical-align: top;
             text-align:center;
         } 
         div[data-testid="column"]:nth-of-type(3)
         {
-            padding-top:50px;
+            padding-top:0px;
             vertical-align: middle;
             text-align:center;
         } 
@@ -180,97 +260,124 @@ st.markdown(
     """,unsafe_allow_html=True
 )
 
-with st.spinner('Wait for it...'):
-    status1=status2=status3=status4=status5=''
-    left,center, right = st.columns([1,1,1.5])
+# with st.spinner('Wait for it...'):
+status1=status2=status3=status4=status5=''
+left,center, right = st.columns([1,1,1.5])
 
 
-    with left:
-        st.write("Study Permit Application")
-    with center:
-        file_spa = st.file_uploader("",key="spa")
-        status_spa = textExtractor(file_spa, "Study Permit Application")
-    with right:
-        fileStatus(status_spa,"spa")
-        # st.write(status1)
+with left:
+    st.write("Study Permit Application")
+with center:
+    file_spa = st.file_uploader("",key="spa")
+    status_spa = textExtractor(file_spa, "Study Permit Application")
+with right:
+    fileStatus(status_spa,"spa")
+    # st.write(status1)
 
-    left,center, right = st.columns([1,1,1.5])
-    with left:
-        st.write("Passport Process Request (PPR)")
-    with center:
-        file_ppr = st.file_uploader("",key="ppr")
-        status_ppr = textExtractor(file_ppr, "Passport Process Request (PPR)")
-    with right:
-        fileStatus(status_ppr,"ppr")
-
-
-    left,center, right = st.columns([1,1,1.5])
-    with left:
-        st.write("Temporary Resident Visa (TRV)")
-    with center:
-        file_trv = st.file_uploader("",key="trv")
-        status_trv = textExtractor(file_trv, "Temporary Resident Visa (TRV)")
-    with right:
-        fileStatus(status_trv,"trv")
+left,center, right = st.columns([1,1,1.5])
+with left:
+    st.write("Passport Process Request (PPR)")
+with center:
+    file_ppr = st.file_uploader("",key="ppr")
+    status_ppr = textExtractor(file_ppr, "Passport Process Request (PPR)")
+with right:
+    fileStatus(status_ppr,"ppr")
 
 
-    left,center, right = st.columns([1,1,1.5])
-    with left:
-        st.write("Study Permit Approval Letter (LOI)")
-    with center:
-        file_loi = st.file_uploader("",key="loi")
-        status_loi = textExtractor(file_loi, "Study Permit Approval Letter (LOI)")
-    with right:
-        fileStatus(status_loi,"loi")
+left,center, right = st.columns([1,1,1.5])
+with left:
+    st.write("Temporary Resident Visa (TRV)")
+with center:
+    file_trv = st.file_uploader("",key="trv")
+    status_trv = textExtractor(file_trv, "Temporary Resident Visa (TRV)")
+with right:
+    fileStatus(status_trv,"trv")
 
 
-    left,center, right = st.columns([1,1,1.5])
-    with left:
-        st.write("Study Permit")
-    with center:
-        file_sp = st.file_uploader("",key="sp")
-        status_sp = textExtractor(file_sp, "Study Permit")
-    with right:
-        fileStatus(status_sp,"sp")
+left,center, right = st.columns([1,1,1.5])
+with left:
+    st.write("Study Permit Approval Letter (LOI)")
+with center:
+    file_loi = st.file_uploader("",key="loi")
+    status_loi = textExtractor(file_loi, "Study Permit Approval Letter (LOI)")
+with right:
+    fileStatus(status_loi,"loi")
 
 
-    docs_list = []
-    spa_check=ppr_check=loi_check=trv_check=sp_check=False
-    try:
-        spa_check = st.session_state["spa_check"]
-    except:
-        print("no spa key")
-    try:
-        ppr_check = st.session_state["ppr_check"]
-    except:
-        print("no ppr key")
-    try:
-        trv_check = st.session_state["trv_check"]
-    except:
-        print("no trv key")
-    try:
-        loi_check = st.session_state["loi_check"]
-    except:
-        print("no loi key")
-    try:
-        sp_check = st.session_state["sp_check"]
-    except:
-        print("no sp key")
-
-    # st.write([spa_check,ppr_check,trv_check,loi_check,sp_check])
-
-    if spa_check:
-        docs_list.append("Study Permit Application")
-        print(docs_list)
-    if ppr_check:
-        docs_list.append("Passport Process Request (PPR)")
-    if trv_check:
-        docs_list.append("Temporary Resident Visa (TRV)")
-    if loi_check:
-        docs_list.append("Study Permit Approval Letter (LOI)")
-    if sp_check:
-        docs_list.append("Study Permit")
+left,center, right = st.columns([1,1,1.5])
+with left:
+    st.write("Study Permit")
+with center:
+    file_sp = st.file_uploader("",key="sp")
+    status_sp = textExtractor(file_sp, "Study Permit")
+with right:
+    fileStatus(status_sp,"sp")
 
 
-    st.write("Documents getting submitted: ")
-    st.write(', '.join(docs_list))
+docs_list = []
+spa_check=ppr_check=loi_check=trv_check=sp_check=False
+try:
+    spa_check = st.session_state["spa_check"]
+except:
+    print("no spa key")
+try:
+    ppr_check = st.session_state["ppr_check"]
+except:
+    print("no ppr key")
+try:
+    trv_check = st.session_state["trv_check"]
+except:
+    print("no trv key")
+try:
+    loi_check = st.session_state["loi_check"]
+except:
+    print("no loi key")
+try:
+    sp_check = st.session_state["sp_check"]
+except:
+    print("no sp key")
+
+# st.write([spa_check,ppr_check,trv_check,loi_check,sp_check])
+
+if spa_check:
+    docs_list.append("Study Permit Application")
+    print(docs_list)
+if ppr_check:
+    docs_list.append("Passport Process Request (PPR)")
+if trv_check:
+    docs_list.append("Temporary Resident Visa (TRV)")
+if loi_check:
+    docs_list.append("Study Permit Approval Letter (LOI)")
+if sp_check:
+    docs_list.append("Study Permit")
+
+# st.write(', '.join(docs_list))
+
+
+def submitClick():
+    if submit_button:
+        names=''
+        for i in docs_list:
+            names  = names+","+i
+        if len(docs_list)>0:
+            st.success("Documents submitted: "+names[1:])
+        else:
+            st.warning("No Documents Submitted")
+
+
+left, center, right = st.columns([1, 1, 1.5])
+with center:
+    submit_button=st.button("Submit")
+submitClick()
+
+
+
+html_string = '''
+
+<script language="javascript">
+    window.scrollTo(0, 100);
+
+</script>
+'''
+
+# components.html(html_string)
