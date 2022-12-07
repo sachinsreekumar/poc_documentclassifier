@@ -28,6 +28,10 @@ st.markdown(
             padding-top:4px;
             padding-bottom:4px;             /* drag drop padding */
         }
+        .css-po3vlj{
+            padding-top:4px;
+            padding-bottom:4px;             /* drag drop padding light */
+        }
         .css-fis6aj{
             padding-top:0px;            /* document display below widget */
         }
@@ -39,20 +43,27 @@ st.markdown(
         }
         
         .css-1fqecya {
-         text-align:left;
+         text-align:left;           /* warning text dark */
+        }
+        .css-yzb2at{
+            text-align:left;     /* warning text light */
         }
         
         .css-1avcm0n{
-            height:0px;
+            height:0px;         /* header dark */
         }
         .css-18e3th9{
             padding-top:0rem !important;
         }
+        .css-18ni7ap{                  /* header light */
+            height:0px;             
+        }
+        
         .st-an {
             padding-top: 4px;
         }
         .css-ocqkz7{
-            height:70px;
+            height:70px;            /* real */
         }
     </style>
     """, unsafe_allow_html=True)
@@ -218,7 +229,7 @@ def fileStatus(status,file_type):
             if(status == "success"):
 
                 set_key = file_type+"_check"
-                st.checkbox("select",key=set_key,value=True)
+                st.checkbox("Select to confirm",key=set_key,value=True)
             elif(status == "not_clear"):
                 st.warning("File contents are not clear. Please verify and re-upload a good quality file.")
             elif(status == "invalid_file"):
@@ -268,7 +279,7 @@ left,center, right = st.columns([1,1,1.5])
 with left:
     st.write("Study Permit Application")
 with center:
-    file_spa = st.file_uploader("",key="spa")
+    file_spa = st.file_uploader("",key="spa",label_visibility="collapsed")
     status_spa = textExtractor(file_spa, "Study Permit Application")
 with right:
     fileStatus(status_spa,"spa")
@@ -278,7 +289,7 @@ left,center, right = st.columns([1,1,1.5])
 with left:
     st.write("Passport Process Request (PPR)")
 with center:
-    file_ppr = st.file_uploader("",key="ppr")
+    file_ppr = st.file_uploader("",key="ppr",label_visibility="collapsed")
     status_ppr = textExtractor(file_ppr, "Passport Process Request (PPR)")
 with right:
     fileStatus(status_ppr,"ppr")
@@ -288,7 +299,7 @@ left,center, right = st.columns([1,1,1.5])
 with left:
     st.write("Temporary Resident Visa (TRV)")
 with center:
-    file_trv = st.file_uploader("",key="trv")
+    file_trv = st.file_uploader("",key="trv",label_visibility="collapsed")
     status_trv = textExtractor(file_trv, "Temporary Resident Visa (TRV)")
 with right:
     fileStatus(status_trv,"trv")
@@ -298,7 +309,7 @@ left,center, right = st.columns([1,1,1.5])
 with left:
     st.write("Study Permit Approval Letter (LOI)")
 with center:
-    file_loi = st.file_uploader("",key="loi")
+    file_loi = st.file_uploader("",key="loi",label_visibility="collapsed")
     status_loi = textExtractor(file_loi, "Study Permit Approval Letter (LOI)")
 with right:
     fileStatus(status_loi,"loi")
@@ -308,7 +319,7 @@ left,center, right = st.columns([1,1,1.5])
 with left:
     st.write("Study Permit")
 with center:
-    file_sp = st.file_uploader("",key="sp")
+    file_sp = st.file_uploader("",key="sp",label_visibility="collapsed")
     status_sp = textExtractor(file_sp, "Study Permit")
 with right:
     fileStatus(status_sp,"sp")
@@ -358,7 +369,7 @@ def submitClick():
     if submit_button:
         names=''
         for i in docs_list:
-            names  = names+","+i
+            names  = names+", "+i
         if len(docs_list)>0:
             st.success("Documents submitted: "+names[1:])
         else:
