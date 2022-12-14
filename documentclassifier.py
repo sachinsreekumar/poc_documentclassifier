@@ -65,6 +65,44 @@ st.markdown(
         .css-ocqkz7{
             height:70px;            /* real */
         }
+        .css-5uatcg:hover {         /* button color */
+            border-color: rgb(31 202 11);
+            color: rgb(31 202 11);
+        }
+        
+        .css-5uatcg:focus:not(:active) {        /* button color */
+            border-color: rgb(31 202 11);
+            color: rgb(31 202 11);
+        }
+        
+        .css-5uatcg:focus {                                                     /* button color */
+            box-shadow: rgb(31 202 11 / 50%) 0px 0px 0px 0.2rem;
+            outline: none;
+        }
+        
+        # .st-co {                            /* checkbox color */
+        #     background-color: rgb(31 118 35);
+        # }
+        # .st-d6 {                                /* checkbox color dark*/
+        #     background-color: rgb(19, 23, 32);
+        # }
+        .st-cj {                            /* checkbox color */
+            border-bottom-color: rgb(31 118 35);
+        }
+
+        .st-ci {                                    /* checkbox color */
+            border-top-color: rgb(31 118 35);
+        }
+
+        .st-ch {                                    /* checkbox color */
+            border-right-color: rgb(31 118 35);
+        }
+
+        .st-cg {                                    /* checkbox color */
+            border-left-color: rgb(31 118 35);
+        }
+        
+         
     </style>
     """, unsafe_allow_html=True)
 
@@ -238,7 +276,8 @@ def fileStatus(status,file_type):
                 st.warning("Looks like this is not a relevant document. Please verify.")
             elif(status.startswith("relevant")):
                 st.warning(
-                    "Please make sure you uploaded the right document. This document looks like a " + status.split("-")[1],
+                    '''Please make sure you uploaded the right document.  
+                    This document looks like a ''' + status.split("-")[1],
                     icon="⚠️")
         except Exception as e:
             print(e)
