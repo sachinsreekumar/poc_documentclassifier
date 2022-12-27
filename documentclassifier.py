@@ -193,8 +193,9 @@ def textExtractor(doc, file_type):
                     pageObj = pdfReader.getPage(i)
                     text_extracted = text_extracted + '   ' + pageObj.extractText()
                 pdfFileObj.close()
-            except:
+            except Exception as e:
                 # st.warning("File contents are not clear. Please verify and re-upload a good quality file.")
+                print(e)
                 return "not_clear"
         elif filetype.lower() in ['ras', 'xwd', 'bmp', 'jpe', 'jpg', 'jpeg', 'xpm', 'ief', 'pbm', 'tif', 'gif', 'ppm',
                                   'xbm', 'tiff', 'rgb', 'pgm', 'png', 'pnm']:
