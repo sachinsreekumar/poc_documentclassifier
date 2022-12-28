@@ -189,7 +189,8 @@ def textExtractor(doc, file_type):
         if filetype.lower() == 'pdf':
             pdfFileObj = doc
             try:
-                pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+                # pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+                pdfReader = PyPDF2.PdfReader(pdfFileObj)
                 # print(pdfReader.numPages)
                 for i in range(0, pdfReader.numPages):
                     pageObj = pdfReader.getPage(i)
