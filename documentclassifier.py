@@ -192,7 +192,7 @@ def textExtractor(doc, file_type):
                 pdfReader = PyPDF2.PdfReader(pdfFileObj)
                 # print(pdfReader.numPages)
                 for i in range(0, len(pdfReader.pages)):                                             #Fixed issue PyPDF not rendering because reader.numpages is deprecated
-                    pageObj = pdfReader.pages(i)
+                    pageObj = pdfReader.pages[i]
                     text_extracted = text_extracted + '   ' + pageObj.extractText()
                 pdfFileObj.close()
             except Exception as e:
