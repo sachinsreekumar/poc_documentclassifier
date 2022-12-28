@@ -184,6 +184,7 @@ def textExtractor(doc, file_type):
     text_extracted = ''
     if doc is not None:
         filetype = doc.type.split('/')[1]  # getting file type
+        print("filetype:",filetype)
         if filetype.lower() == 'pdf':
             pdfFileObj = doc
             try:
