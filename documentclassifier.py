@@ -182,6 +182,7 @@ def documentValidation(text):
 
 def textExtractor(doc, file_type):
     text_extracted = ''
+    print("aa:",doc is not None)
     if doc is not None:
         filetype = doc.type.split('/')[1]  # getting file type
         print("filetype:",filetype)
