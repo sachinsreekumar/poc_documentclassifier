@@ -192,12 +192,12 @@ def textExtractor(doc, file_type):
                 pdfReader = PyPDF2.PdfReader(pdfFileObj)
                 # print(pdfReader.numPages)
                 for i in range(0, len(pdfReader.pages)):                                             #Fixed issue PyPDF not rendering because reader.numpages is deprecated
-                    pageObj = pdfReader.pages[i]
-                    text_extracted = text_extracted + '   ' + pageObj.extract_text()
+                    pageObj = pdfReader.pages[i]                                                     #Fixed issue PyPDF not rendering
+                    text_extracted = text_extracted + '   ' + pageObj.extract_text()                    #Fixed issue PyPDF not rendering
                 pdfFileObj.close()
             except Exception as e:
                 # st.warning("File contents are not clear. Please verify and re-upload a good quality file.")
-                st.write(e)
+                # st.write(e)
                 return "not_clear"
         elif filetype.lower() in ['ras', 'xwd', 'bmp', 'jpe', 'jpg', 'jpeg', 'xpm', 'ief', 'pbm', 'tif', 'gif', 'ppm',
                                   'xbm', 'tiff', 'rgb', 'pgm', 'png', 'pnm']:
