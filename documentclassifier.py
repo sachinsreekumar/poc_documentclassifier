@@ -181,6 +181,7 @@ def documentValidation(text):
     return recommended_doc
 
 def textExtractor(doc, file_type):
+    print("aaaaa")
     text_extracted = ''
     print("aa:",doc is not None)
     if doc is not None:
@@ -323,6 +324,7 @@ with left:
     st.write("Study Permit Application")
 with center:
     file_spa = st.file_uploader("",key="spa",label_visibility="collapsed")
+    print("bbbb")
     status_spa = textExtractor(file_spa, "Study Permit Application")
 with right:
     fileStatus(status_spa,"spa")
