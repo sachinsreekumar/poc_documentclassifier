@@ -181,9 +181,7 @@ def documentValidation(text):
     return recommended_doc
 
 def textExtractor(doc, file_type):
-    print("aaaaa")
     text_extracted = ''
-    print("aa:",doc is not None)
     if doc is not None:
         filetype = doc.type.split('/')[1]  # getting file type
         print("filetype:",filetype)
@@ -193,13 +191,13 @@ def textExtractor(doc, file_type):
                 # pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
                 pdfReader = PyPDF2.PdfReader(pdfFileObj)
                 # print(pdfReader.numPages)
-                for i in range(0, pdfReader.numPages):
+                for i in range(0, len(pdfReader.pages)):                                             #Fixed issue PyPDF not rendering because reader.numpages is deprecated
                     pageObj = pdfReader.getPage(i)
                     text_extracted = text_extracted + '   ' + pageObj.extractText()
                 pdfFileObj.close()
             except Exception as e:
                 # st.warning("File contents are not clear. Please verify and re-upload a good quality file.")
-                st.write(e)
+                # st.write(e)
                 return "not_clear"
         elif filetype.lower() in ['ras', 'xwd', 'bmp', 'jpe', 'jpg', 'jpeg', 'xpm', 'ief', 'pbm', 'tif', 'gif', 'ppm',
                                   'xbm', 'tiff', 'rgb', 'pgm', 'png', 'pnm']:
@@ -324,7 +322,6 @@ with left:
     st.write("Study Permit Application")
 with center:
     file_spa = st.file_uploader("",key="spa",label_visibility="collapsed")
-    print("bbbb")
     status_spa = textExtractor(file_spa, "Study Permit Application")
 with right:
     fileStatus(status_spa,"spa")
