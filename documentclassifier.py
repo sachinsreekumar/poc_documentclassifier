@@ -142,13 +142,26 @@ with right:
 # pytesseract.pytesseract.tesseract_cmd= r'C:\Program Files\Tesseract-OCR\tesseract.exe'                  #For running locally
 pytesseract.pytesseract.tesseract_cmd=r"tesseract"                                                    #For running in cloud
 
+
 #Function to preprocess image and returns text from it
 def img_to_text(img):
+    # Pre-processing: Convert the image to grayscale and apply median blur to reduce noise
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
-    rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (18, 18))
-    dilation = cv2.dilate(thresh, rect_kernel, iterations=1)
-    contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
+    median = cv2.medianBlur(gray, 3)
+
+    # Pre-processing: Enhance image contrast using adaptive histogram equalization
+    equalized = cv2.equalizeHist(median)
+
+    # Pre-processing: Apply image restoration techniques to improve image quality
+    restored = cv2.inpaint(equalized, median, 3, cv2.INPAINT_TELEA)
+
+    # Threshold the image to reveal the text
+    ret, thresh = cv2.threshold(restored, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+    rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (30, 30))
+    dilation = cv2.dilate(thresh, rect_kernel, iterations=10)
+    contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+
     final_text = ''
     for cnt in contours:
         x, y, w, h = cv2.boundingRect(cnt)
@@ -194,17 +207,24 @@ def textExtractor(doc, file_type):
                 for i in range(0, len(pdfReader.pages)):                                             #Fixed issue PyPDF not rendering because reader.numpages is deprecated
                     pageObj = pdfReader.pages[i]                                                     #Fixed issue PyPDF not rendering
                     text_extracted = text_extracted + '   ' + pageObj.extract_text()                    #Fixed issue PyPDF not rendering
+
+                if(len(text_extracted)<50):                                                                  #runs if pdf is scanned
+                    return "scanned_pdf_warning"
                 pdfFileObj.close()
+
             except Exception as e:
                 # st.warning("File contents are not clear. Please verify and re-upload a good quality file.")
                 # st.write(e)
+                # print(e)
                 return "not_clear"
+
         elif filetype.lower() in ['ras', 'xwd', 'bmp', 'jpe', 'jpg', 'jpeg', 'xpm', 'ief', 'pbm', 'tif', 'gif', 'ppm',
                                   'xbm', 'tiff', 'rgb', 'pgm', 'png', 'pnm']:
             try:
                 file_bytes = np.asarray(bytearray(doc.read()), dtype=np.uint8)
                 opencv_image = cv2.imdecode(file_bytes, 1)
                 text_extracted = img_to_text(opencv_image)
+                print(text_extracted)
             except:
                 # st.warning("Image is not clear. Please verify and re-upload a good quality file.")
                 return "not_clear"
@@ -218,7 +238,9 @@ def textExtractor(doc, file_type):
                 return "success"
             else:
                 doc_recommended = documentValidation(text_extracted)
-                if doc_recommended is None:
+                if doc_recommended is None and filetype.lower() != 'pdf':                   #For image files, prints unclear if expected words are not found
+                    return "not_clear"
+                elif doc_recommended is None:
                     return "not_relevant"
                 else:
                     return "relevant-"+doc_recommended
@@ -228,7 +250,9 @@ def textExtractor(doc, file_type):
                 return "success"
             else:
                 doc_recommended = documentValidation(text_extracted)
-                if doc_recommended is None:
+                if doc_recommended is None and filetype.lower() != 'pdf':  # For image files, prints unclear if expected words are not found
+                    return "not_clear"
+                elif doc_recommended is None:
                     return "not_relevant"
                 else:
                     return "relevant-"+doc_recommended
@@ -238,7 +262,9 @@ def textExtractor(doc, file_type):
                 return "success"
             else:
                 doc_recommended = documentValidation(text_extracted)
-                if doc_recommended is None:
+                if doc_recommended is None and filetype.lower() != 'pdf':  # For image files, prints unclear if expected words are not found
+                    return "not_clear"
+                elif doc_recommended is None:
                     return "not_relevant"
                 else:
                     return "relevant-"+doc_recommended
@@ -248,7 +274,9 @@ def textExtractor(doc, file_type):
                 return "success"
             else:
                 doc_recommended = documentValidation(text_extracted)
-                if doc_recommended is None:
+                if doc_recommended is None and filetype.lower() != 'pdf':  # For image files, prints unclear if expected words are not found
+                    return "not_clear"
+                elif doc_recommended is None:
                     return "not_relevant"
                 else:
                     return "relevant-"+doc_recommended
@@ -258,7 +286,9 @@ def textExtractor(doc, file_type):
                 return "success"
             else:
                 doc_recommended = documentValidation(text_extracted)
-                if doc_recommended is None:
+                if doc_recommended is None and filetype.lower() != 'pdf':  # For image files, prints unclear if expected words are not found
+                    return "not_clear"
+                elif doc_recommended is None:
                     return "not_relevant"
                 else:
                     return "relevant-"+doc_recommended
@@ -282,6 +312,8 @@ def fileStatus(status,file_type):
                     '''Please make sure you uploaded the right document.  
                     This document looks like a ''' + status.split("-")[1],
                     icon="⚠️")
+            elif(status.startswith("scanned_pdf_warning")):
+                st.warning("File contents are not clear. Please try with an image format.")
         except Exception as e:
             print(e)
 
